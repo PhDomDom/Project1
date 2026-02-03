@@ -53006,9 +53006,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 37683749, guid: f31663f1bd5fc4c4da07998856f78171, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 37683750, guid: f31663f1bd5fc4c4da07998856f78171, type: 3}
+      propertyPath: stopAction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 37683750, guid: f31663f1bd5fc4c4da07998856f78171, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37683751, guid: f31663f1bd5fc4c4da07998856f78171, type: 3}
+      propertyPath: m_SortingOrder
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 135018898580198713, guid: f31663f1bd5fc4c4da07998856f78171, type: 3}
       propertyPath: m_RootOrder
