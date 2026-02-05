@@ -22,7 +22,7 @@ public class AnimationControl : MonoBehaviour
 
     public void Attack()
     {
-        Collider2D hit = Physics2D.OverlapCircle(attackPoint.position, radius, playerLayer);
+        Collider2D hit = Physics2D.OverlapCircle(attackPoint.transform.position, radius, playerLayer);
 
         if (hit != null)
         {
@@ -33,6 +33,6 @@ public class AnimationControl : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(attackPoint.position, radius);
     }
 }
