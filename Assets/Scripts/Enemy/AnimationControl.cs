@@ -10,11 +10,14 @@ public class AnimationControl : MonoBehaviour
 
     private PlayerAnim player;
     private Animator anim;
+    private Skeleton skeleton;
+    
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
         player = FindObjectOfType<PlayerAnim>();
+        skeleton = GetComponentInParent<Skeleton>();
     }
 
     public void PlayAnim(int value)
@@ -24,18 +27,33 @@ public class AnimationControl : MonoBehaviour
 
     public void Attack()
     {
-        Collider2D hit = Physics2D.OverlapCircle(attackPoint.transform.position, radius, playerLayer);
-
-        if (hit != null)
+        if (!skeleton.isDead)
         {
-            // Detecta colisão com o player
-            player.OnHit();
+            Collider2D hit = Physics2D.OverlapCircle(attackPoint.transform.position, radius, playerLayer);
+
+            if (hit != null)
+            {
+                // Detecta colisão com o player
+                player.OnHit();
+            }
         }
+        
     }
 
     public void OnHit()
     {
-        anim.SetTrigger("hit");
+        if (skeleton.currentHealth <= 0)
+        {
+            skeleton.isDead = true;
+            anim.SetTrigger("death");
+            Destroy(skeleton.gameObject, 2f);
+        }
+        else
+        {
+            anim.SetTrigger("hit");
+            skeleton.currentHealth--;
+            skeleton.healthBar.fillAmount = skeleton.currentHealth / skeleton.totalHealth;
+        }
     }
 
     private void OnDrawGizmosSelected()
