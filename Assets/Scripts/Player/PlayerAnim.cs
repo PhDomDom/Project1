@@ -9,6 +9,9 @@ public class PlayerAnim : MonoBehaviour
     private Casting cast;
 
     private bool hasRolled; // <- nova flag
+    private bool isHitting;
+    private float recoveryTime = 1f;
+    private float timeCount;
 
     void Start()
     {
@@ -21,12 +24,22 @@ public class PlayerAnim : MonoBehaviour
     {
         OnMove();
         OnRun();
+        if (isHitting)
+        {
+            timeCount += Time.deltaTime;
+            if (timeCount >= recoveryTime)
+            {
+                isHitting = false;
+                timeCount = 0f;
+            }
+        }
+        
     }
 
     #region Movement
     void OnMove()
     {
-        // Executa animação de rolagem apenas uma vez
+        // Executa animaÃ§Ã£oo de rolagem apenas uma vez
         if (player.isRolling && !hasRolled)
         {
             anim.SetTrigger("isRoll");
@@ -39,7 +52,7 @@ public class PlayerAnim : MonoBehaviour
             hasRolled = false;
         }
 
-        // Controle de transição
+        // Controle de transiÃ§Ã£o
         if (player.direction.sqrMagnitude > 0 && !player.isRolling)
         {
             anim.SetInteger("transition", 1);
@@ -49,7 +62,7 @@ public class PlayerAnim : MonoBehaviour
             anim.SetInteger("transition", 0);
         }
 
-        // Direção (flip)
+        // DireÃ§Ã£o (flip)
         if (player.direction.x > 0)
         {
             transform.eulerAngles = new Vector2(0, 0);
@@ -58,17 +71,17 @@ public class PlayerAnim : MonoBehaviour
         {
             transform.eulerAngles = new Vector2(0, 180);
         }
-        // Ação de cortar a árvore
+        // AÃ§Ã£o de cortar a Ã¡rvore
         if (player.isCutting)
         {
             anim.SetInteger("transition", 3);
         }
-        // Ação de cavar o buraco
+        // AÃ§Ã£o de cavar o buraco
         if (player.isDigging)
         {
             anim.SetInteger("transition", 4);
         }
-        // Ação de soltar a água
+        // AÃ§Ã£o de soltar a Ã¡gua
         if (player.isWatering)
         {
             anim.SetInteger("transition", 5);
@@ -103,5 +116,14 @@ public class PlayerAnim : MonoBehaviour
     public void OnHammeringEndend()
     {
         anim.SetBool("hammering", false);
+    }
+
+    public void OnHit()
+    {
+        if (!isHitting)
+        {
+            anim.SetTrigger("hit");
+            isHitting = true;
+        }
     }
 }
