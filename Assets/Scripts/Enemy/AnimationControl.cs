@@ -33,6 +33,11 @@ public class AnimationControl : MonoBehaviour
         }
     }
 
+    public void OnHit()
+    {
+        anim.SetTrigger("hit");
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(attackPoint.position, radius);
