@@ -34,7 +34,7 @@ public class Skeleton : MonoBehaviour
 
             if (Vector2.Distance(transform.position, player.transform.position) <= agent.stoppingDistance)
             {
-                // Chegou no Limite de Dist�ncia / Skeeleton para!
+                // Chegou no Limite de Distância / Skeeleton para!
                 animControl.PlayAnim(2);       
             }
             else
