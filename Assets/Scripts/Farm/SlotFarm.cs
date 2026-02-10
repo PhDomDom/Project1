@@ -5,14 +5,18 @@ using UnityEngine;
 
 public class SlotFarm : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [Header("Audio")] [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip holeSFX;
+    [SerializeField] private AudioClip carrotSFX;
+
+    [Header("Components")] [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
     [SerializeField] private Sprite hole;
     [SerializeField] private Sprite carrot;
 
-    [Header("Settings")]
-    [SerializeField] private int digAmount;  // Quantidade de "escavações"
-    [SerializeField] private float waterAmount;  // Total de água para nascer uma cenoura
+    [Header("Settings")] [SerializeField] private int digAmount; // Quantidade de "escavaï¿½ï¿½es"
+    [SerializeField] private float waterAmount; // Total de ï¿½gua para nascer uma cenoura
 
     [SerializeField] private bool detecting;
 
@@ -20,6 +24,7 @@ public class SlotFarm : MonoBehaviour
     private float currentWater;
 
     private bool dugHole;
+    private bool plantedCarrot;
     private bool isInterecting;
 
     [SerializeField] PlayerItems playerItems;
@@ -39,19 +44,22 @@ public class SlotFarm : MonoBehaviour
                 currentWater += 0.01f;
             }
 
-            if (currentWater >= waterAmount)  // Encheu o total de água
+            if (currentWater >= waterAmount && !plantedCarrot) // Encheu o total de ï¿½gua
             {
+                audioSource.PlayOneShot(holeSFX);
                 spriteRenderer.sprite = carrot;
 
-                if (Input.GetKeyDown(KeyCode.E) && isInterecting)
-                {
-                    spriteRenderer.sprite = hole;
-                    playerItems.carrots++;
-                    currentWater = 0f;
-                }
+                plantedCarrot = true;
+            }
+            
+            if (Input.GetKeyDown(KeyCode.E) && isInterecting && plantedCarrot)
+            {
+                audioSource.PlayOneShot(carrotSFX);
+                spriteRenderer.sprite = hole;
+                playerItems.carrots++;
+                currentWater = 0f;
             }
         }
-        
     }
 
     public void OnHit()
@@ -60,14 +68,14 @@ public class SlotFarm : MonoBehaviour
 
         if (digAmount <= initialDigAmount / 2)
         {
-            spriteRenderer.sprite = hole;        // Abre o buraco para plantar (lá ele)
+            spriteRenderer.sprite = hole; // Abre o buraco para plantar (lï¿½ ele)
             dugHole = true;
         }
 
         // if (digAmount <= 0)
         //{
-       //     spriteRenderer.sprite = carrot;     // Plantar cenoura
-      //  }
+        //     spriteRenderer.sprite = carrot;     // Plantar cenoura
+        //  }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,7 +101,6 @@ public class SlotFarm : MonoBehaviour
         if (collision.CompareTag("Water"))
         {
             detecting = false;
-
         }
 
         if (collision.CompareTag("Player"))
